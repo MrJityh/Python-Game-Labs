@@ -6,6 +6,7 @@ Then clone the repository to your local machine.
 Edit this file to: 
     Print 'Hello <Your Name>' to the console.
 Commit your changes to your local repository.
-Push your changes to a new repository in your github account.
+Push your changes to a new repository in your github accout.
+I am jmp7247@psu.edu
 '''
 print("Hello James Pierce")
