@@ -15,7 +15,7 @@ def get_randomly_spread_cities(size, n_cities):
     
     :param size: the size of the map as a tuple of 2 integers
     :param n_cities: The number of cities to generate
-    :return: A list of cities with random x and y coordinates.
+    :return: A list of tuples, each representing a city, with random x and y coordinates.
     """
     resulting_cities = []
 
