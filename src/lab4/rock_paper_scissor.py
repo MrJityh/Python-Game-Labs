@@ -1,6 +1,6 @@
 # From https://codereview.stackexchange.com/questions/237601/simple-python-turn-based-battle-game
 import random
-from lab4.player import Player
+from player import Player
 
 
 weapons = ["Rock", "Paper", "Scissor"]
