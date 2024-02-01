@@ -45,7 +45,31 @@ class AiPlayer(Player):
         self.initial_weapon = random_weapon_select()
     
     def weapon_selecting_strategy(self):
-        pass
+
+        #0 is rock, 1 is paper, 2 is scissors
+
+        if len(self.opponent_choices) >= 1:
+            if len(self.opponent_choices) >= 3:
+            #Defeat Mimic
+                if self.opponent_choices[-1] == self.my_choices[-2]:
+                    if self.my_choices[-1] == 0:
+                        strategy = 1
+                    if self.my_choices[-1] == 1:
+                        strategy = 2
+                    if self.my_choices[-1] == 2:
+                        strategy = 0
+                    return strategy
+            #Defeat Single/Switching
+                if self.opponent_choices[-1] == 0:
+                    strategy = 1
+                elif self.opponent_choices[-1] == 1:
+                    strategy = 2
+                elif self.opponent_choices[-1] == 2:
+                    strategy = 0
+                return strategy
+        #if all else fails
+        strategy = random_weapon_select()
+        return strategy
 
 
 if __name__ == '__main__':
