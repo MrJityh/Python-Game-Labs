@@ -46,6 +46,8 @@ if __name__ == "__main__":
     routes = []
 
     ''' Setup cities and routes in here'''
+    city_locations = get_randomly_spread_cities(size, len(city_names))
+    paths = get_routes(city_names)
 
     city_locations_dict = {name: location for name, location in zip(city_names, city_locations)}
     random.shuffle(routes)
@@ -60,7 +62,20 @@ if __name__ == "__main__":
         screen.blit(pygame_surface, (0, 0))
 
         ''' draw cities '''
+        #for each city, draw the city on the map
+        #circle(surface, color, center, radius, width=0)
+        for i, city in enumerate(city_locations):
+            #print(f'{city_names[i]}: {city}')
+            color = pygame.Color(random.randint(0,255),random.randint(0,255),random.randint(0,255))
+            pygame.draw.circle(pygame_surface, (255,0,0), city, 5)
 
         ''' draw first 10 routes '''
+        #for each route, draw a line
+        #aalines(surface, color, closed, points, blend)
+        for i, path in enumerate(paths):
+            #print(f'{i}: {path[0]} to {path[1]}')
+            pygame.draw.aalines(pygame_surface, black, 0, ((city_locations_dict[path[0]]),(city_locations_dict[path[1]])))
+
+        ##Have something here to keep the draw from looping
 
         pygame.display.flip()
