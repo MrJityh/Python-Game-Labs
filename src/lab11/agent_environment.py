@@ -8,6 +8,7 @@ from landscape import get_landscape, get_combat_bg
 from pygame_ai_player import PyGameAIPlayer
 
 from pathlib import Path
+from typing import List, Tuple
 
 sys.path.append(str((Path(__file__) / ".." / "..").resolve().absolute()))
 
@@ -18,28 +19,28 @@ pygame.font.init()
 game_font = pygame.font.SysFont("Comic Sans MS", 15)
 
 
-def get_landscape_surface(size):
+def get_landscape_surface(size: Tuple[int, int]) -> pygame.Surface:
     landscape = get_landscape(size)
     print("Created a landscape of size", landscape.shape)
     pygame_surface = pygame.surfarray.make_surface(landscape[:, :, :3])
     return pygame_surface
 
 
-def get_combat_surface(size):
+def get_combat_surface(size: Tuple[int, int]) -> pygame.Surface:
     landscape = get_combat_bg(size)
     print("Created a landscape of size", landscape.shape)
     pygame_surface = pygame.surfarray.make_surface(landscape[:, :, :3])
     return pygame_surface
 
 
-def setup_window(width, height, caption):
+def setup_window(width: int, height: int, caption: str) -> pygame.Surface:
     pygame.init()
     window = pygame.display.set_mode((width, height))
     pygame.display.set_caption(caption)
     return window
 
 
-def displayCityNames(city_locations, city_names):
+def displayCityNames(city_locations: List[Tuple[int, int]], city_names: List[str]) -> None:
     for i, name in enumerate(city_names):
         text_surface = game_font.render(str(i) + " " + name, True, (0, 0, 150))
         screen.blit(text_surface, city_locations[i])
@@ -48,12 +49,12 @@ def displayCityNames(city_locations, city_names):
 class State:
     def __init__(
         self,
-        current_city,
-        destination_city,
-        travelling,
-        encounter_event,
-        cities,
-        routes,
+        current_city: int,
+        destination_city: int,
+        travelling: bool,
+        encounter_event: bool,
+        cities: List[Tuple[int, int]],
+        routes: List[Tuple[Tuple[int, int], Tuple[int, int]]],
     ):
         self.current_city = current_city
         self.destination_city = destination_city
@@ -100,6 +101,7 @@ if __name__ == "__main__":
 
     """ Add a line below that will reset the player variable to 
     a new object of PyGameAIPlayer class."""
+    player = PyGameAIPlayer()
 
     state = State(
         current_city=start_city,

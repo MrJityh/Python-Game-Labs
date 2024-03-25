@@ -1,9 +1,10 @@
 import matplotlib.pyplot as plt
 from perlin_noise import PerlinNoise
 import numpy as np
+from typing import Callable, Tuple
 
 
-def get_elevation(size, octaves=3):
+def get_elevation(size: Tuple[int, int], octaves: int=3) -> np.ndarray:
     xpix, ypix = size
     noise = PerlinNoise(octaves=octaves, seed=2)
     # elevation = np.random.random(size)
@@ -13,7 +14,7 @@ def get_elevation(size, octaves=3):
     return elevation
 
 
-def elevation_to_rgba(elevation, cmap="gist_earth"):
+def elevation_to_rgba(elevation: np.ndarray, cmap: str="gist_earth") -> np.ndarray:
     xpix, ypix = np.array(elevation).shape
     colormap = plt.cm.get_cmap(cmap)
     elevation = (elevation - elevation.min()) / (elevation.max() - elevation.min())
@@ -27,8 +28,8 @@ def elevation_to_rgba(elevation, cmap="gist_earth"):
     return landscape
 
 
-get_landscape = lambda pixel_map: elevation_to_rgba(get_elevation(pixel_map))
-get_combat_bg = lambda pixel_map: elevation_to_rgba(
+get_landscape: Callable[[Tuple[int, int]], np.ndarray] = lambda pixel_map: elevation_to_rgba(get_elevation(pixel_map))
+get_combat_bg: Callable[[Tuple[int, int]], np.ndarray] = lambda pixel_map: elevation_to_rgba(
     get_elevation(pixel_map, 10), "RdPu"
 )
 

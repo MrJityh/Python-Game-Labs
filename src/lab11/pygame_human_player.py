@@ -1,12 +1,12 @@
 import pygame
 from lab11.turn_combat import CombatPlayer
-
+from typing import Any
 
 class PyGameHumanPlayer:
     def __init__(self) -> None:
         pass
 
-    def selectAction(self, state):
+    def selectAction(self, state) -> int:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -17,10 +17,10 @@ class PyGameHumanPlayer:
 
 
 class PyGameHumanCombatPlayer(CombatPlayer):
-    def __init__(self, name):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
 
-    def weapon_selecting_strategy(self):
+    def weapon_selecting_strategy(self) -> None:
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:

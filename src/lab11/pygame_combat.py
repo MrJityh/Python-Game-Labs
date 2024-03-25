@@ -5,6 +5,7 @@ from sprite import Sprite
 from turn_combat import CombatPlayer, Combat
 from pygame_ai_player import PyGameAICombatPlayer
 from pygame_human_player import PyGameHumanCombatPlayer
+from typing import Tuple
 
 AI_SPRITE_PATH = Path("assets/ai.png")
 
@@ -13,10 +14,10 @@ game_font = pygame.font.SysFont("Comic Sans MS", 15)
 
 
 class PyGameComputerCombatPlayer(CombatPlayer):
-    def __init__(self, name):
+    def __init__(self, name: str):
         super().__init__(name)
 
-    def weapon_selecting_strategy(self):
+    def weapon_selecting_strategy(self) -> int:
         if 30 < self.health <= 50:
             self.weapon = 2
         elif self.health <= 30:
@@ -26,7 +27,7 @@ class PyGameComputerCombatPlayer(CombatPlayer):
         return self.weapon
 
 
-def draw_combat_on_window(combat_surface, screen, player_sprite, opponent_sprite):
+def draw_combat_on_window(combat_surface: pygame.Surface, screen: pygame.Surface, player_sprite: Sprite, opponent_sprite: Sprite):
     screen.blit(combat_surface, (0, 0))
     player_sprite.draw_sprite(screen)
     opponent_sprite.draw_sprite(screen)
@@ -48,12 +49,12 @@ def run_turn(currentGame, player, opponent):
     reward = currentGame.checkWin(player, opponent)
 
 
-def run_pygame_combat(combat_surface, screen, player_sprite):
+def run_pygame_combat(combat_surface: pygame.Surface, screen: pygame.Surface, player_sprite: Sprite):
     currentGame = Combat()
     player = PyGameHumanCombatPlayer("Legolas")
     """ Add a line below that will reset the player object
     to an instance of the PyGameAICombatPlayer class"""
-
+    player = PyGameAICombatPlayer("Gimli")
     opponent = PyGameComputerCombatPlayer("Computer")
     opponent_sprite = Sprite(
         AI_SPRITE_PATH, (player_sprite.sprite_pos[0] - 100, player_sprite.sprite_pos[1])

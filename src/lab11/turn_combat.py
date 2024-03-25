@@ -3,22 +3,23 @@ import random
 import pygame
 import sys
 from pathlib import Path
+from typing import List, Tuple
 
 sys.path.append(str((Path(__file__) / ".." / "..").resolve().absolute()))
 from lab4.rock_paper_scissor import Player
 
-weapons = ["Sword", "Arrow", "Fire"]
+weapons: List[str] = ["Sword", "Arrow", "Fire"]
 
 
 class CombatPlayer(Player):
-    def __init__(self, name):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
         self.name = name
         self.health = 100
         self.weapon = 0
         self.current_env_state = None
 
-    def selectAction(self, percept):
+    def selectAction(self, percept: Tuple) -> None:
         """
         > The function takes in the opponent's last move, updates the player's history of opponent's moves,
          and then updates the player's history of their own moves
@@ -35,11 +36,11 @@ class CombatPlayer(Player):
         self.weapon = self._action
         self.my_choices.append(self.action)
 
-    def damage(self):
+    def damage(self) -> None:
         points = 10
         self.health -= points
 
-    def weapon_selecting_strategy(self):
+    def weapon_selecting_strategy(self) -> int:
         choice = input("Choose your weapon s-Sword, a-Arrow or f-Fire:  ")
         choice = {"s": 1, "a": 2, "f": 3}[choice]
         self.weapon = choice - 1
@@ -47,26 +48,26 @@ class CombatPlayer(Player):
 
 
 class ComputerCombatPlayer(CombatPlayer):
-    def __init__(self, name):
+    def __init__(self, name: str) -> None:
         super().__init__(name)
 
-    def weapon_selecting_strategy(self):
+    def weapon_selecting_strategy(self) -> int:
         choice = random.randint(1, 3)
         self.weapon = choice - 1
         return self.weapon
 
 
 class Combat:
-    def __init__(self):
+    def __init__(self) -> None:
         self.gameOver = False
         self.round = 0
 
-    def newRound(self):
+    def newRound(self) -> None:
         self.round += 1
         print("\n***   Round: %d   ***\n" % (self.round))
 
     # Check if either or both Players is below zero health
-    def checkWin(self, player, opponent):
+    def checkWin(self, player: CombatPlayer, opponent: CombatPlayer) -> None:
         if player.health < 1 and opponent.health > 0:
             self.gameOver = True
             print("You Lose")
@@ -81,7 +82,7 @@ class Combat:
             return 0
         return 0
 
-    def displayResult(self, player, opponent):
+    def displayResult(self, player: CombatPlayer, opponent: CombatPlayer) -> None:
         print(
             "%s used a %s, %s used a %s \n"
             % (
@@ -93,7 +94,7 @@ class Combat:
         )
         print("%s caused damage to %s\n" % (player.name, opponent.name))
 
-    def takeTurn(self, player, opponent):
+    def takeTurn(self, player: CombatPlayer, opponent: CombatPlayer) -> None:
 
         # Decision Array
         #
