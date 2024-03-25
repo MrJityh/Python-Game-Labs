@@ -19,17 +19,28 @@ from pathlib import Path
 
 sys.path.append(str((Path(__file__) / ".." / ".." / "..").resolve().absolute()))
 
-from src.lab5.landscape import elevation_to_rgba
+from src.lab5.landscape import elevation_to_rgba, get_elevation
 
 
 def game_fitness(cities, idx, elevation, size):
-    fitness = 0.0001  # Do not return a fitness of 0, it will mess up the algorithm.
+    fitness = 300.0001  # Do not return a fitness of 0, it will mess up the algorithm.
     """
     Create your fitness function here to fulfill the following criteria:
     1. The cities should not be under water
     2. The cities should have a realistic distribution across the landscape
     3. The cities may also not be on top of mountains or on top of each other
     """
+    distance_threshold = 15
+    distance_penalty = 30
+    underwater_threshold = 0.35
+    underwater_penalty = 65
+    mountain_threshold = 0.6
+    mountain_penalty = 50
+
+    city_coordinates = [(city // size[1], city % size[1]) for city in cities]
+    penalties = [underwater_penalty if elevation[x,y] < underwater_threshold else mountain_penalty if elevation[x,y] > mountain_threshold else distance_penalty * sum(np.sqrt((x-x2)**2 + (y-y2)**2) < distance_threshold for x2, y2 in city_coordinates if (x,y) != (x2,y2) for x,y in city_coordinates)]
+    fitness -= sum(penalties)
+
     return fitness
 
 
@@ -113,7 +124,7 @@ if __name__ == "__main__":
 
     size = 100, 100
     n_cities = 10
-    elevation = []
+    elevation = get_elevation(size)
     """ initialize elevation here from your previous code"""
     # normalize landscape
     elevation = np.array(elevation)
