@@ -1,5 +1,5 @@
 import pygame
-from lab11.turn_combat import CombatPlayer
+from turn_combat import CombatPlayer
 from typing import Any
 
 class PyGameHumanPlayer:
