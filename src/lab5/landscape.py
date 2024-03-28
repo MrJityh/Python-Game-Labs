@@ -14,7 +14,7 @@ def get_elevation(size):
 
     return elevation
 
-def elevation_to_rgba(elevation):
+def elevation_to_rgba(elevation, cmap='gist_earth'):
     xpix, ypix = np.array(elevation).shape
     colormap = plt.cm.get_cmap('terrain')
     elevation = (elevation - elevation.min())/(elevation.max()-elevation.min())
@@ -25,7 +25,6 @@ def elevation_to_rgba(elevation):
  
 
 get_landscape = lambda size: elevation_to_rgba(get_elevation(size))
-
 
 if __name__ == '__main__':
     size = 640, 480

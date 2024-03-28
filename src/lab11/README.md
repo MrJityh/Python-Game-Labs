@@ -4,13 +4,13 @@ You may now consider creating a branch of your respository to work on the projec
 
 ## Lab Task 1: Create a Class Diagram of the lab11 folder
 Consider each file a package for the UML diagram.
-Submit the class diagram by the end of the lab session to assignment 'Lab 11: Project Handoff (Task 2)'.
+Submit the class diagram by the end of the lab session to assignment 'Lab 11: Project Handoff (Task 1)'.
 
 ## Lab Task 2: Complete the pygame_ai_player.py file
 Complete the pygame_ai_player.py file with the two classes scaffolded out for you.
 Make sure that the game runs through the agent_environment.py file fully autonomously.
 You can just use some hard coded actions for the agent to take at this point. 
-Submit the code by the end of the week to assignment 'Lab 11: Project Handoff (Task 1)'.
+Submit the code by the end of the week to assignment 'Lab 11: Project Handoff (Task 2)'.
 
 > Code created in this lab was created with help from ChatGPT. \n
 > The prompt used was:

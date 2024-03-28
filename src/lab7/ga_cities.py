@@ -132,14 +132,14 @@ if __name__ == "__main__":
     landscape_pic = elevation_to_rgba(elevation)
 
     # setup fitness function and GA
-    fitness = lambda cities, idx: game_fitness(
-        cities, idx, elevation=elevation, size=size
+    fitness = lambda solution, idx: game_fitness(
+        solution, idx, elevation=elevation, size=size
     )
     fitness_function, ga_instance = setup_GA(fitness, n_cities, size)
 
     # Show one of the initial solutions.
-    cities = ga_instance.initial_population[0]
-    cities = solution_to_cities(cities, size)
+    random_solution = ga_instance.initial_population[0]
+    cities = solution_to_cities(random_solution, size)
     show_cities(cities, landscape_pic)
 
     # Run the GA to optimize the parameters of the function.
@@ -148,8 +148,8 @@ if __name__ == "__main__":
     print("Final Population")
 
     # Show the best solution after the GA finishes running.
-    cities = ga_instance.best_solution()[0]
-    cities_t = solution_to_cities(cities, size)
+    best_solution = ga_instance.best_solution()[0]
+    cities_t = solution_to_cities(best_solution, size)
     plt.imshow(landscape_pic, cmap="gist_earth")
     plt.plot(cities_t[:, 1], cities_t[:, 0], "r.")
     plt.show()
