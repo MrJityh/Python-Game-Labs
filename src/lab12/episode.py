@@ -23,53 +23,16 @@ Repeat forever:
         Q(s,a) <- average(Returns(s,a))
     (c) For each s in the episode
 
-
-
-
 '''
 import sys
 from pathlib import Path
 
 sys.path.append(str((Path(__file__) / ".." / ".." / "..").resolve().absolute()))
 
-from src.lab11.pygame_combat import (
-    Combat,
-    PyGameAICombatPlayer,
-    PyGameComputerCombatPlayer,
-    run_turn,
-)
+from src.lab11.pygame_combat import run_turn
+from src.lab11.turn_combat import Combat
 
 
-def run_turn(currentGame, player, opponent):
-    players = [player, opponent]
-    states = list(reversed([(player.health, player.weapon) for player in players]))
-
-    for current_player, state in zip(players, states):
-        current_player.selectAction(state)
-
-    currentGame.newRound()
-    currentGame.takeTurn(player, opponent)
-
-    observation = (player.health, opponent.health)
-    action = player.weapon
-    reward = currentGame.checkWin(player, opponent)
-
-    return observation, action, reward
-
-
-def run_episode(player1, player2):
+def run_episode(playerOne, playerTwo):
     currentGame = Combat()
-    episode_data = []
-
-    while not currentGame.gameOver:
-        observation, action, reward = run_turn(currentGame, player1, player2)
-        episode_data.append((observation, action, reward))
-
-    return episode_data
-
-
-if __name__ == "__main__":
-    player1 = PyGameAICombatPlayer("Legolas")
-    player2 = PyGameComputerCombatPlayer("Computer")
-
-    print(run_episode(player1, player2))
+    return run_turn(currentGame, playerOne, playerTwo)

@@ -1,10 +1,10 @@
 import pygame
 from pathlib import Path
 
-from sprite import Sprite
-from turn_combat import CombatPlayer, Combat
-from pygame_ai_player import PyGameAICombatPlayer
-from pygame_human_player import PyGameHumanCombatPlayer
+from .sprite import Sprite
+from src.lab11.turn_combat import CombatPlayer, Combat
+from src.lab11.pygame_ai_player import PyGameAICombatPlayer
+from src.lab11.pygame_human_player import PyGameHumanCombatPlayer
 from typing import Tuple
 
 AI_SPRITE_PATH = Path("assets/ai.png")
@@ -47,6 +47,7 @@ def run_turn(currentGame, player, opponent):
     print("%s's health = %d" % (player.name, player.health))
     print("%s's health = %d" % (opponent.name, opponent.health))
     reward = currentGame.checkWin(player, opponent)
+    return ((player.health, opponent.health), player.weapon, reward)
 
 
 def run_pygame_combat(combat_surface: pygame.Surface, screen: pygame.Surface, player_sprite: Sprite):
