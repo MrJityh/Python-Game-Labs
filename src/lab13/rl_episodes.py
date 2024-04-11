@@ -14,6 +14,9 @@ this may lead to the agent losing the game.
 '''
 import sys
 from pathlib import Path
+import numpy
+import random
+from collections import defaultdict
 
 # line taken from turn_combat.py
 sys.path.append(str((Path(__file__) / ".." / "..").resolve().absolute()))
@@ -74,7 +77,17 @@ def run_episodes(n_episodes):
         Return the action values as a dictionary of dictionaries where the keys are states and 
             the values are dictionaries of actions and their values.
     '''
+    action_values = defaultdict(dict)
 
+    for _ in range(n_episodes):
+        episode = run_random_episode(PyGameRandomCombatPlayer('Player'),PyGameRandomCombatPlayer('Opponent'))
+
+        previous = get_history_returns(episode)
+        for key, value in previous.items():
+            action_values[key].update(value)
+        
+        action_values = dict(action_values)
+        print(action_values) 
     return action_values
 
 

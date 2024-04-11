@@ -7,10 +7,12 @@ from lab11.turn_combat import CombatPlayer
 
 class PyGameAIPlayer:
     def __init__(self) -> None:
+        self.current_city = 0
         pass
 
     def selectAction(self, state):
-        return ord(str(random.randint(0,9)))
+        self.current_city = (self.current_city + 1) % 10
+        return ord(str(self.current_city))
 
 
 """ Create PyGameAICombatPlayer class here"""
