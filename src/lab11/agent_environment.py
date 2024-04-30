@@ -1,10 +1,9 @@
 import sys
 import pygame
 import random
-from sprite import Sprite
+import numpy as np
 from pygame_combat import run_pygame_combat
 from pygame_human_player import PyGameHumanPlayer
-from lab5.landscape import get_landscape, elevation_to_rgba, get_elevation
 from pygame_ai_player import PyGameAIPlayer
 
 from pathlib import Path
@@ -13,6 +12,10 @@ from typing import List, Tuple
 sys.path.append(str((Path(__file__) / ".." / "..").resolve().absolute()))
 
 from lab2.cities_n_routes import get_randomly_spread_cities, get_routes
+from lab3.travel_cost import get_route_cost, generate_terrain, route_to_coordinates
+from lab5.landscape import get_landscape, elevation_to_rgba, get_elevation
+from lab7.ga_cities import game_fitness, setup_GA, solution_to_cities
+from lab11.sprite import Sprite
 
 get_combat_bg = lambda pixel_map: elevation_to_rgba(
     get_elevation(pixel_map), "RdPu"
