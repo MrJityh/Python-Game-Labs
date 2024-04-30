@@ -37,10 +37,9 @@ def get_routes(cities):
             each item in the list (a link) represents a route between two cities.
     """
 
-    routes = itertools.combinations(cities,2)
+    routes = list(itertools.permutations(cities,2))
 
     return routes
-    pass
 
 
 # TODO: Fix variable names
