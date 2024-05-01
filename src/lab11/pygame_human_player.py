@@ -4,6 +4,7 @@ from typing import Any
 
 class PyGameHumanPlayer:
     def __init__(self) -> None:
+        self.gold = 100
         pass
 
     def selectAction(self, state) -> int:

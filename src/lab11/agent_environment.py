@@ -5,6 +5,7 @@ import numpy as np
 from pygame_combat import run_pygame_combat
 from pygame_human_player import PyGameHumanPlayer
 from pygame_ai_player import PyGameAIPlayer
+from battleLogs import battle_log
 
 from pathlib import Path
 from typing import List, Tuple
@@ -51,6 +52,15 @@ def displayCityNames(city_locations: List[Tuple[int, int]], city_names: List[str
         text_surface = game_font.render(str(i) + " " + name, True, (0, 0, 150))
         screen.blit(text_surface, city_locations[i])
 
+def route_is_real(routes, cities, city_idx1, city_idx2):
+    city1 = tuple(cities[city_idx1])
+    city2 = tuple(cities[city_idx2])
+    for route in routes:
+        route = tuple(map(tuple, route))
+        if (city1 in route) and (city2 in route):
+            return True
+    return False
+
 
 class State:
     def __init__(
@@ -77,6 +87,7 @@ if __name__ == "__main__":
     end_city = 9
     sprite_path = "assets/lego.png"
     sprite_speed = 1
+    landscape = get_landscape(size)
 
     screen = setup_window(width, height, "Game World Gen Practice")
 
@@ -95,6 +106,20 @@ if __name__ == "__main__":
         "Forthyr",
     ]
 
+#    #GA implementation to get more realistic cities
+#    elevation = get_elevation(size)
+#    elevation = np.array(elevation)
+#    elevation = (elevation - elevation.min()) / (elevation.max() - elevation.min())
+#    fitness = lambda solution, idx: game_fitness(
+#        solution, idx, elevation=elevation, size=size
+#    )
+#    fitness_function, ga_instance = setup_GA(fitness, len(city_names), size)
+#    cities = solution_to_cities(ga_instance.initial_population[0], size)
+#    ga_instance.run()
+#
+#    #set cities
+#    city_locations = solution_to_cities(ga_instance.best_solution()[0], size(city_names))
+#    routes = get_routes(city_locations)
     city_locations = get_randomly_spread_cities(size, len(city_names))
     routes = get_routes(city_locations)
 
@@ -103,11 +128,13 @@ if __name__ == "__main__":
 
     player_sprite = Sprite(sprite_path, city_locations[start_city])
 
-    player = PyGameHumanPlayer()
-
-    """ Add a line below that will reset the player variable to 
-    a new object of PyGameAIPlayer class."""
-    player = PyGameAIPlayer()
+    humanPlayer = "-1"
+    while(humanPlayer != "N" and humanPlayer != "Y"):
+        humanPlayer = input("Would you like to play as the human player? Y/N: ")
+    if (humanPlayer == "Y"):
+        player = PyGameHumanPlayer
+    if (humanPlayer == "N"):
+        player = PyGameAIPlayer
 
     state = State(
         current_city=start_city,
@@ -119,20 +146,26 @@ if __name__ == "__main__":
     )
 
     while True:
-        action = player.selectAction(state)
+        action = player.selectAction(player, state)
         if 0 <= int(chr(action)) <= 9:
             if int(chr(action)) != state.current_city and not state.travelling:
                 ''' 
                 Check if a route exist between the current city and the destination city.
                 '''
-                start = city_locations[state.current_city]
-                state.destination_city = int(chr(action))
-                destination = city_locations[state.destination_city]
-                player_sprite.set_location(city_locations[state.current_city])
-                state.travelling = True
-                print(
-                    "Travelling from", state.current_city, "to", state.destination_city
-                )
+                start_city = state.current_city
+                destination_city = int(chr(action))
+                route = [(0,0),(0,0)]
+                if route_is_real(routes, city_locations, start_city, destination_city):
+                    start = city_locations[state.current_city]
+                    route[0] = tuple(start)
+                    state.destination_city = int(chr(action))
+                    destination = city_locations[state.destination_city]
+                    route[1] = tuple(destination)
+                    player_sprite.set_location(city_locations[state.current_city])
+                    state.travelling = True
+                    print("Travelling from", state.current_city, "to", state.destination_city)
+                else:
+                    print("No available route")
 
         screen.fill(black)
         screen.blit(landscape_surface, (0, 0))
@@ -149,6 +182,12 @@ if __name__ == "__main__":
             state.encounter_event = random.randint(0, 1000) < 2
             if not state.travelling:
                 print('Arrived at', state.destination_city)
+                travel_cost = int(get_route_cost(route, landscape))
+                if travel_cost < 5:
+                    travel_cost = random.randint(2,5)
+                print('Travel cost = {travel_cost}')
+                #player.gold -= travel_cost
+                print('Remaining gold = {player.gold}')
 
         if not state.travelling:
             encounter_event = False
@@ -156,6 +195,7 @@ if __name__ == "__main__":
 
         if state.encounter_event:
             run_pygame_combat(combat_surface, screen, player_sprite)
+            print(battle_log())
             state.encounter_event = False
         else:
             player_sprite.draw_sprite(screen)
