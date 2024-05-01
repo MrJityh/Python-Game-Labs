@@ -124,7 +124,7 @@ if __name__ == "__main__":
 
     size = 100, 100
     n_cities = 10
-    elevation = get_elevation(size)
+    elevation = []
     """ initialize elevation here from your previous code"""
     # normalize landscape
     elevation = np.array(elevation)

@@ -2,8 +2,8 @@ import requests
 import random
 import re
 
-API_TOKEN = ''
-API_URL  = ""
+API_TOKEN = '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'
+API_URL  = "https://api-inference.huggingface.co/models/gpt2"
 headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
 def query(payload):
@@ -29,3 +29,4 @@ def battle_log():
         "I do not love the bright sword for its sharpness, I love only what it defends",
         "There's some good in this world, and it's worth fighting or"
     ]
+    return generate_paragraph(options[random.randint(0,5)])
